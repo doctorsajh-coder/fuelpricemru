@@ -17,18 +17,21 @@ export default async function handler(req, res) {
       .replace(/&nbsp;/gi, " ")
       .replace(/&amp;/gi, "&")
       .replace(/\\s+/g, " ");
-    const patterns = [
-      /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{4})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i,
-      /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{2})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i
-    ];
-    for (const re of patterns) {
-      const match = text.match(re);
-      if (!match) continue;
-      const year = match[3].length === 2 ? "20" + match[3] : match[3];
-      const mogas = Number(match[4]);
-      const gasoil = Number(match[5]);
-      if (mogas > 30 && mogas < 200 && gasoil > 30 && gasoil < 200) {
-        return { date: `${match[1]}-${match[2]}-${year}`, mogas, gasoil };
+
+    // Find a STC date row and take the next two decimal prices in that row.
+    const dateRe = /(\\d{1,2}[-\\s][A-Za-z]+[-\\s]\\d{4})/g;
+    let dateMatch;
+    while ((dateMatch = dateRe.exec(text)) !== null) {
+      const window = text.slice(dateMatch.index, dateMatch.index + 700);
+      const prices = [...window.matchAll(/\\b(\\d{2,3}\\.\\d{2})\\b/g)]
+        .map(m => Number(m[1]))
+        .filter(n => n > 30 && n < 200);
+      if (prices.length >= 2) {
+        return {
+          date: dateMatch[1].replace(/\\s+/g, " ").trim(),
+          mogas: prices[0],
+          gasoil: prices[1]
+        };
       }
     }
     return null;
