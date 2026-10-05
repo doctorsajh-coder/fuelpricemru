@@ -1,57 +1,69 @@
 export default async function handler(req, res) {
   const STC_URL = "https://www.stcmu.com/ppm/retail-prices";
+  const FALLBACK = { date: "29 September 2026", mogas: 77.70, gasoil: 78.35 };
 
-  try {
-    const response = await fetch(STC_URL, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; FuelPriceMRU/1.0)",
-        "Accept": "text/html,application/xhtml+xml"
-      }
-    });
+  const sources = [
+    { name: "STC", url: STC_URL, headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; FuelPriceMRU/1.0)",
+      "Accept": "text/html,application/xhtml+xml,text/html"
+    }},
+    { name: "AllOrigins", url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(STC_URL),
+      headers: { "Accept": "text/html,application/xhtml+xml,text/html" }}
+  ];
 
-    if (!response.ok) {
-      throw new Error("STC returned HTTP " + response.status);
-    }
-
-    const html = await response.text();
-
-    // STC currently exposes retail-price rows containing date, Mogas and Gas Oil.
-    // Keep several patterns so minor HTML/table formatting changes do not immediately break the API.
+  function parsePrices(html) {
     const patterns = [
-      /(\d{2}[-\s]\w{3}[-\s]\d{4})\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)/i,
-      /(\d{2}[-\s]\w+[-\s]\d{4})[^\d]{0,120}([\d]+(?:\.\d+)?)\s*[^\d]{0,120}([\d]+(?:\.\d+)?)/i
+      /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{4})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i,
+      /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{2})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i
     ];
-
-    let found = null;
     for (const re of patterns) {
       const match = html.match(re);
-      if (match) {
-        const mogas = Number(match[2]);
-        const gasoil = Number(match[3]);
-        if (mogas > 30 && mogas < 200 && gasoil > 30 && gasoil < 200) {
-          found = { date: match[1].replace(/\s+/g, " ").trim(), mogas, gasoil };
-          break;
-        }
+      if (!match) continue;
+      const year = match[3].length === 2 ? "20" + match[3] : match[3];
+      const mogas = Number(match[4]);
+      const gasoil = Number(match[5]);
+      if (mogas > 30 && mogas < 200 && gasoil > 30 && gasoil < 200) {
+        return { date: `${match[1]}-${match[2]}-${year}`, mogas, gasoil };
       }
     }
-
-    if (!found) {
-      throw new Error("Could not find valid STC retail prices");
-    }
-
-    res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");
-    res.status(200).json({
-      source: "State Trading Corporation",
-      sourceUrl: STC_URL,
-      date: found.date,
-      prices: {
-        mogas: { price: found.mogas, date: found.date },
-        gasoil: { price: found.gasoil, date: found.date }
-      }
-    });
-  } catch (error) {
-    res.status(502).json({
-      error: "Unable to retrieve STC fuel prices"
-    });
+    return null;
   }
+
+  async function fetchSource(source) {
+    const response = await fetch(source.url, { headers: source.headers, redirect: "follow" });
+    if (!response.ok) throw new Error(source.name + " HTTP " + response.status);
+    const found = parsePrices(await response.text());
+    if (!found) throw new Error(source.name + " price table not found");
+    return { ...found, source: source.name };
+  }
+
+  for (const source of sources) {
+    try {
+      const found = await fetchSource(source);
+      console.log("[fuel-prices] fetched", found.source, found.date, found.mogas, found.gasoil);
+      res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");
+      return res.status(200).json({
+        source: "State Trading Corporation", sourceUrl: STC_URL, retrieval: found.source,
+        date: found.date,
+        prices: {
+          mogas: { price: found.mogas, date: found.date },
+          gasoil: { price: found.gasoil, date: found.date }
+        }
+      });
+    } catch (error) {
+      console.error("[fuel-prices] source failed", source.name, String(error));
+    }
+  }
+
+  console.warn("[fuel-prices] all live sources failed; using verified fallback");
+  res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=3600");
+  return res.status(200).json({
+    source: "State Trading Corporation", sourceUrl: STC_URL, retrieval: "fallback",
+    date: FALLBACK.date,
+    prices: {
+      mogas: { price: FALLBACK.mogas, date: FALLBACK.date },
+      gasoil: { price: FALLBACK.gasoil, date: FALLBACK.date }
+    },
+    warning: "Live STC retrieval temporarily unavailable; using last verified fallback prices."
+  });
 }
