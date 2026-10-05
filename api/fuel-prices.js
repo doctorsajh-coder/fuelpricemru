@@ -12,12 +12,17 @@ export default async function handler(req, res) {
   ];
 
   function parsePrices(html) {
+    const text = html
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/\\s+/g, " ");
     const patterns = [
       /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{4})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i,
       /(\d{1,2})[-\s]([A-Za-z]+)[-\s](\d{2})[^\d]{0,300}([\d]+(?:\.\d+)?)[^\d]{0,300}([\d]+(?:\.\d+)?)/i
     ];
     for (const re of patterns) {
-      const match = html.match(re);
+      const match = text.match(re);
       if (!match) continue;
       const year = match[3].length === 2 ? "20" + match[3] : match[3];
       const mogas = Number(match[4]);
