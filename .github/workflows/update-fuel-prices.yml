@@ -17,19 +17,54 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Fetch and parse STC retail prices
         run: |
           python3 - <<'PY'
-          import html
           import json
           import re
           import urllib.request
+          from html.parser import HTMLParser
           from pathlib import Path
+          from datetime import datetime
 
-          url = "https://www.stcmu.com/ppm/retail-prices"
+          URL = "https://www.stcmu.com/ppm/retail-prices"
+
+          class TableParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.rows = []
+                  self.current_row = None
+                  self.current_cell = None
+                  self.current_text = []
+
+              def handle_starttag(self, tag, attrs):
+                  tag = tag.lower()
+                  if tag == "tr":
+                      self.current_row = []
+                  elif tag in ("td", "th") and self.current_row is not None:
+                      self.current_cell = []
+                      self.current_text = []
+
+              def handle_data(self, data):
+                  if self.current_cell is not None:
+                      self.current_text.append(data)
+
+              def handle_endtag(self, tag):
+                  tag = tag.lower()
+                  if tag in ("td", "th") and self.current_row is not None and self.current_cell is not None:
+                      value = re.sub(r"\s+", " ", "".join(self.current_text)).strip()
+                      self.current_row.append(value)
+                      self.current_cell = None
+                      self.current_text = []
+                  elif tag == "tr" and self.current_row is not None:
+                      self.rows.append(self.current_row)
+                      self.current_row = None
+
           req = urllib.request.Request(
-              url,
+              URL,
               headers={
                   "User-Agent": "Mozilla/5.0 (compatible; FuelPriceMRU/1.0)",
                   "Accept": "text/html,application/xhtml+xml"
@@ -39,29 +74,41 @@ jobs:
           with urllib.request.urlopen(req, timeout=30) as response:
               raw = response.read().decode("utf-8", errors="replace")
 
-          text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
-          text = re.sub(r"\s+", " ", text).strip()
+          parser = TableParser()
+          parser.feed(raw)
 
-          pattern = re.compile(
-              r"(\d{1,2}[- ](?:January|February|March|April|May|June|July|August|September|October|November|December)[- ]\d{4})"
-              r".{0,500}?(\d{2,3}\.\d{2}).{0,100}?(\d{2,3}\.\d{2})",
+          date_re = re.compile(
+              r"^(\d{1,2})[- ](January|February|March|April|May|June|July|August|September|October|November|December)[- ](\d{4})$",
               re.I
           )
 
-          match = pattern.search(text)
-          if not match:
-              raise SystemExit("Could not find STC retail-price table")
+          candidates = []
+          for row in parser.rows:
+              if len(row) < 3:
+                  continue
 
-          date, mogas, gasoil = match.groups()
-          mogas = float(mogas)
-          gasoil = float(gasoil)
+              date_match = date_re.match(row[0].strip())
+              if not date_match:
+                  continue
 
-          if not (30 < mogas < 200 and 30 < gasoil < 200):
-              raise SystemExit(f"Suspicious prices: {mogas}, {gasoil}")
+              try:
+                  date = datetime.strptime(row[0].strip().replace("-", " "), "%d %B %Y")
+                  mogas = float(row[1].replace(",", ""))
+                  gasoil = float(row[2].replace(",", ""))
+              except ValueError:
+                  continue
+
+              if 30 < mogas < 200 and 30 < gasoil < 200:
+                  candidates.append((date, row[0].strip(), mogas, gasoil))
+
+          if not candidates:
+              raise SystemExit("Could not find a valid STC retail-price table row")
+
+          _, date, mogas, gasoil = max(candidates, key=lambda item: item[0])
 
           out = {
               "source": "State Trading Corporation",
-              "sourceUrl": url,
+              "sourceUrl": URL,
               "date": date,
               "prices": {
                   "mogas": {"price": mogas, "date": date},
@@ -87,4 +134,5 @@ jobs:
             exit 0
           fi
           git commit -m "Update Mauritius fuel prices"
-          git push
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
