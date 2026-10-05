@@ -1,0 +1,15 @@
+{
+  "source": "State Trading Corporation",
+  "sourceUrl": "https://www.stcmu.com/ppm/retail-prices",
+  "date": "29-September-2026",
+  "prices": {
+    "mogas": {
+      "price": 77.7,
+      "date": "29-September-2026"
+    },
+    "gasoil": {
+      "price": 78.35,
+      "date": "29-September-2026"
+    }
+  }
+}
