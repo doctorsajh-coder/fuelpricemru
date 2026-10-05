@@ -155,7 +155,7 @@
         <option value="mogas">Mogas (Petrol)</option>
         <option value="gasoil">Gas Oil (Diesel)</option>
       </select>
-      <span class="date" id="stcDate">29 Sep 2026</span>
+      <span class="date" id="stcDate">Loading STC price…</span>
       <button type="button" class="btn-ghost btn-sm" id="refreshStc">↻ Refresh</button>
       <span class="status" id="stcStatus"></span>
     </div>
@@ -227,10 +227,12 @@
   const STORE_KEY = "fuel-cost-calculator.mu.v1";
 
   /* ---------------- STC data ---------------- */
-  const STC_PRICES = {
+  const DEFAULT_STC_PRICES = {
     mogas:  { price: 77.70, date: "29 Sep 2026", label: "Mogas" },
     gasoil: { price: 78.35, date: "29 Sep 2026", label: "Gas Oil" }
   };
+  const STC_CACHE_KEY = "fuel-cost-calculator.mu.stc.v1";
+  const STC_PRICES = structuredClone(DEFAULT_STC_PRICES);
 
   /* ---------------- state ---------------- */
   let state = loadState();
@@ -294,49 +296,83 @@
   }
 
   /* ---------------- STC fetch ---------------- */
-  async function fetchStcPrices() {
-    const statusEl = $("stcStatus");
-    statusEl.textContent = "Fetching…";
-    statusEl.style.color = "var(--muted)";
-
-    const urls = [
-      "https://www.stcmu.com/ppm/retail-prices",
-      "https://corsproxy.io/?https://www.stcmu.com/ppm/retail-prices",
-      "https://api.allorigins.win/raw?url=https://www.stcmu.com/ppm/retail-prices"
-    ];
-
-    for (const url of urls) {
-      try {
-        const res = await fetch(url, { headers: { "Accept": "text/html" } });
-        if (!res.ok) continue;
-        const html = await res.text();
-
-        const rowRe = /(\d{2}-\w+-\d{4})\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)/g;
-        let match, found = null;
-        while ((match = rowRe.exec(html)) !== null) {
-          found = { date: match[1], mogas: parseFloat(match[2]), gasoil: parseFloat(match[3]) };
-          break;
-        }
-
-        if (found &&
-            found.mogas  > 30 && found.mogas  < 200 &&
-            found.gasoil > 30 && found.gasoil < 200) {
-          STC_PRICES.mogas.price  = found.mogas;
-          STC_PRICES.gasoil.price = found.gasoil;
-          const d = found.date.replace(/-/g, " ");
-          STC_PRICES.mogas.date = d;
-          STC_PRICES.gasoil.date = d;
-          $("stcDate").textContent = d;
-          statusEl.textContent = "Updated ✓";
-          statusEl.style.color = "var(--accent)";
-          applyStcPrice();
-          return true;
-        }
-      } catch (_) { /* try next URL */ }
+  function loadStcCache() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STC_CACHE_KEY));
+      if (!raw || !raw.prices || !raw.fetchedAt) return false;
+      for (const type of ["mogas", "gasoil"]) {
+        const p = Number(raw.prices[type]?.price);
+        if (!(p > 30 && p < 200)) return false;
+        STC_PRICES[type] = {
+          ...DEFAULT_STC_PRICES[type],
+          price: p,
+          date: raw.prices[type].date || DEFAULT_STC_PRICES[type].date
+        };
+      }
+      return true;
+    } catch (_) {
+      return false;
     }
+  }
 
-    statusEl.textContent = "Using cached price";
-    return false;
+  function saveStcCache() {
+    try {
+      localStorage.setItem(STC_CACHE_KEY, JSON.stringify({
+        prices: STC_PRICES,
+        fetchedAt: new Date().toISOString()
+      }));
+    } catch (_) {}
+  }
+
+  function setStcStatus(text, colour = "var(--muted)") {
+    const statusEl = $("stcStatus");
+    statusEl.textContent = text;
+    statusEl.style.color = colour;
+  }
+
+  function updateStcDisplay(sourceText) {
+    const type = $("fuelType").value;
+    const d = STC_PRICES[type];
+    $("stcDate").textContent = d.date;
+    setStcStatus(sourceText);
+    applyStcPrice();
+  }
+
+  async function fetchStcPrices() {
+    setStcStatus("Fetching…");
+    try {
+      const res = await fetch("/api/fuel-prices", {
+        headers: { "Accept": "application/json" },
+        cache: "no-store"
+      });
+      if (!res.ok) throw new Error("API " + res.status);
+
+      const data = await res.json();
+      if (!data?.prices?.mogas || !data?.prices?.gasoil) {
+        throw new Error("Invalid STC response");
+      }
+
+      for (const type of ["mogas", "gasoil"]) {
+        const p = Number(data.prices[type].price);
+        if (!(p > 30 && p < 200)) throw new Error("Invalid fuel price");
+        STC_PRICES[type] = {
+          ...DEFAULT_STC_PRICES[type],
+          price: p,
+          date: data.prices[type].date || data.date || DEFAULT_STC_PRICES[type].date
+        };
+      }
+
+      saveStcCache();
+      updateStcDisplay("Updated ✓");
+      return true;
+    } catch (_) {
+      if (loadStcCache()) {
+        updateStcDisplay("Using last fetched price");
+      } else {
+        updateStcDisplay("Using built-in price");
+      }
+      return false;
+    }
   }
 
   function applyStcPrice() {
@@ -345,6 +381,7 @@
     if (d) {
       $("vPrice").value = d.price.toFixed(2);
       $("vFuelType").value = type;
+      $("stcDate").textContent = d.date;
     }
   }
 
@@ -497,7 +534,12 @@
     renderAll();
   });
 
-  $("fuelType").addEventListener("change", applyStcPrice);
+  $("fuelType").addEventListener("change", () => {
+    applyStcPrice();
+    if (STC_PRICES[$("fuelType").value]) {
+      $("stcDate").textContent = STC_PRICES[$("fuelType").value].date;
+    }
+  });
 
   const refreshBtn = $("refreshStc");
   refreshBtn.addEventListener("click", async () => {
@@ -512,6 +554,7 @@
 
   /* ---------------- init ---------------- */
   $("currency").value = state.currency;
+  loadStcCache();
   applyStcPrice();
   renderAll();
   fetchStcPrices();
