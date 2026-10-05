@@ -363,7 +363,7 @@
       }
 
       saveStcCache();
-      updateStcDisplay("Updated ✓");
+      updateStcDisplay(data.warning ? "Using verified fallback" : "Updated ✓");
       return true;
     } catch (_) {
       if (loadStcCache()) {
