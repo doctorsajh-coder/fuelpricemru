@@ -130,6 +130,11 @@
 
   .muted{color:var(--muted);font-size:14px}
   footer{color:var(--muted);font-size:12px;text-align:center;line-height:1.7}
+
+  .route-map iframe{display:block;border:1px solid var(--line);border-radius:12px;background:#0d1117}
+  .route-map-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin-bottom:12px}
+  .route-message{color:var(--danger);font-size:13px;margin-left:12px}
+  @media (max-width:700px){.route-map-controls{grid-template-columns:1fr}.route-message{margin-left:0}}
 </style>
 </head>
 <body>
@@ -200,6 +205,24 @@
     </div>
     <div id="vehicleList" class="cards"></div>
     <p id="emptyState" class="muted">No vehicles yet — add one above to see its cost per km and fuel consumption.</p>
+  </section>
+
+
+  <!-- ============ ROUTE MAP ============ -->
+  <section class="panel route-map">
+    <h2>Route map</h2>
+    <div class="route-map-controls">
+      <label class="field">From
+        <input id="origin" type="text" placeholder="e.g. Port Louis" autocomplete="off">
+      </label>
+      <label class="field">To
+        <input id="destination" type="text" placeholder="e.g. Grand Baie" autocomplete="off">
+      </label>
+      <button id="showRoute" class="btn-primary" type="button">Show route</button>
+    </div>
+    <span id="routeMessage" class="route-message" role="alert"></span>
+    <p class="hint">Read the distance shown on the map and type it manually into the Trip cost panel below.</p>
+    <iframe id="routeMap" title="Google Maps route" height="380" width="100%" hidden loading="lazy"></iframe>
   </section>
 
   <!-- ============ TRIP ============ -->
@@ -551,6 +574,21 @@
   });
 
   $("tripDistance").addEventListener("input", renderTrip);
+
+
+  /* ---------------- route map ---------------- */
+  $("showRoute").addEventListener("click", () => {
+    const origin = $("origin").value.trim();
+    const destination = $("destination").value.trim();
+    const message = $("routeMessage");
+    if (!origin || !destination) {
+      message.textContent = "Enter both a starting point and destination.";
+      return;
+    }
+    message.textContent = "";
+    $("routeMap").src = "https://maps.google.com/maps?saddr=" + encodeURIComponent(origin) + "&daddr=" + encodeURIComponent(destination) + "&output=embed";
+    $("routeMap").hidden = false;
+  });
 
   /* ---------------- init ---------------- */
   $("currency").value = state.currency;
