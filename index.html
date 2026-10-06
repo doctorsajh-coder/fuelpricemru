@@ -185,18 +185,18 @@
 
     <form id="vehicleForm" novalidate>
       <div class="grid">
-        <label class="field">Vehicle name
-          <input id="vName" type="text" placeholder="e.g. Toyota Vitz" autocomplete="off">
-        </label>
-        <label class="field">Energy price (Rs / unit)
-          <input id="vPrice" type="number" min="0" step="0.01" placeholder="77.70" inputmode="decimal">
-        </label>
         <label class="field">Fuel type
           <select id="vFuelType">
             <option value="mogas">Mogas / Petrol</option>
             <option value="gasoil">Gas Oil / Diesel</option>
             <option value="electric">Electric</option>
           </select>
+        </label>
+        <label class="field">Vehicle name
+          <input id="vName" type="text" placeholder="e.g. Toyota Vitz" autocomplete="off">
+        </label>
+        <label class="field">Energy price (Rs / unit)
+          <input id="vPrice" type="number" min="0" step="0.01" placeholder="77.70" inputmode="decimal">
         </label>
         <label class="field">Energy economy
           <input id="vEff" type="number" min="0" step="0.01" placeholder="18.5" inputmode="decimal">
