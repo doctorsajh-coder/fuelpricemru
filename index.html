@@ -5,140 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fuel Cost Calculator — Mauritius (MUR)</title>
 <style>
-  :root{
-    --bg:#0e1116;
-    --panel:#161b22;
-    --panel-2:#1c232d;
-    --line:#2a323d;
-    --text:#e6edf3;
-    --muted:#8b949e;
-    --accent:#3fb950;
-    --accent-2:#58a6ff;
-    --danger:#f85149;
-    --ev:#a371f7;
-  }
-  *{box-sizing:border-box}
-  [hidden]{display:none !important}
-  body{
-    margin:0;
-    min-height:100vh;
-    padding:34px 18px 70px;
-    color:var(--text);
-    background:radial-gradient(1100px 520px at 50% -12%, #16212c, #0e1116 62%) fixed;
-    font:15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-  .wrap{max-width:1040px;margin:0 auto;display:grid;gap:20px}
-
-  header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
-  h1{margin:0;font-size:clamp(22px,3.4vw,30px);letter-spacing:-.5px}
-  .sub{margin:6px 0 0;color:var(--muted);font-size:14px}
-  .currency{display:grid;gap:6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-  .currency input{width:88px;text-align:center}
-
-  .panel{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-  }
-  .panel h2{margin:0 0 16px;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600}
-  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-  .panel-head h2{margin:0}
-
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:14px;margin-bottom:16px}
-  label.field{display:grid;gap:6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-  input,select{
-    width:100%;
-    padding:10px 12px;
-    border-radius:9px;
-    border:1px solid var(--line);
-    background:#0d1117;
-    color:var(--text);
-    font:inherit;
-    font-size:15px;
-    outline:none;
-    transition:border-color .15s, box-shadow .15s;
-  }
-  input:focus,select:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(88,166,255,.15)}
-  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
-  option{background:#0d1117}
-
-  button{font:inherit;cursor:pointer;border-radius:9px;transition:filter .15s, background .15s, border-color .15s}
-  button:active{transform:translateY(1px)}
-  .btn-primary{background:var(--accent);color:#06170a;border:none;font-weight:700;padding:11px 22px;letter-spacing:.02em}
-  .btn-primary:hover{filter:brightness(1.08)}
-  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:8px 14px;font-size:13px}
-  .btn-ghost:hover{border-color:var(--danger);color:var(--danger)}
-  .btn-sm{padding:6px 12px;font-size:12px}
-  .error{color:var(--danger);font-size:13px;margin-left:12px}
-  .hint{color:var(--muted);font-size:12px;margin-top:4px}
-
-  /* ---------- price source ---------- */
+  :root{--bg:#0e1116;--panel:#161b22;--panel-2:#1c232d;--line:#2a323d;--text:#e6edf3;--muted:#8b949e;--accent:#3fb950;--accent-2:#58a6ff;--danger:#f85149;--ev:#a371f7}
+  *{box-sizing:border-box}[hidden]{display:none!important}
+  body{margin:0;min-height:100vh;padding:30px 16px 60px;color:var(--text);background:radial-gradient(1100px 520px at 50% -12%,#16212c,#0e1116 62%) fixed;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;display:grid;gap:18px} header{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+  h1{margin:0;font-size:clamp(22px,3.4vw,30px);letter-spacing:-.5px}.sub{margin:6px 0 0;color:var(--muted);font-size:14px}
+  .currency{display:grid;gap:6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}.currency input{width:88px;text-align:center}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  .panel h2{margin:0 0 15px;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h2{margin:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:13px;margin-bottom:15px}
+  label.field{display:grid;gap:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  input,select{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:#0d1117;color:var(--text);font:inherit;font-size:15px;outline:none}
+  input:focus,select:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(88,166,255,.15)} select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}option{background:#0d1117}
+  button{font:inherit;cursor:pointer;border-radius:9px;transition:filter .15s,background .15s,border-color .15s}button:active{transform:translateY(1px)}
+  .btn-primary{background:var(--accent);color:#06170a;border:none;font-weight:700;padding:11px 20px}.btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:8px 13px;font-size:13px}.btn-ghost:hover{border-color:var(--accent-2);color:var(--text)}
+  .btn-danger{border-color:rgba(248,81,73,.35);color:var(--danger)}.btn-sm{padding:6px 10px;font-size:12px}.error{color:var(--danger);font-size:13px;margin-left:10px}.hint{color:var(--muted);font-size:12px;margin:5px 0 0}
   .price-source{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;border-radius:9px;background:#0d1117;border:1px solid var(--line)}
-  .price-source .label{font-size:12px;color:var(--muted)}
-  .price-source .date{font-size:12px;color:var(--accent-2);font-weight:600}
-  .price-source .status{font-size:12px;color:var(--muted);margin-left:auto}
-
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .card{
-    position:relative;
-    background:var(--panel-2);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:16px;
-    display:grid;
-    gap:12px;
-    animation:pop .22s ease both;
-  }
-  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .card.is-best{border-color:rgba(63,185,80,.55);box-shadow:0 0 0 1px rgba(63,185,80,.18) inset}
-  .card.is-ev{border-color:rgba(163,113,247,.55);box-shadow:0 0 0 1px rgba(163,113,247,.14) inset}
-  .pill.ev{color:#fff;background:var(--ev)}
-  .card-head{display:flex;align-items:center;gap:8px}
-  .card-head h3{margin:0;font-size:16px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .pill{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#06170a;background:var(--accent);padding:3px 8px;border-radius:999px}
-  .del{background:none;border:none;color:var(--muted);font-size:15px;line-height:1;padding:5px 7px}
-  .del:hover{color:var(--danger);background:rgba(248,81,73,.1)}
-
-  /* --- headline: Rs/km · km/L · L/100km --- */
-  .headline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .headline > div{display:grid;gap:2px}
-  .headline .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-  .headline .v{font-size:20px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.15}
-  .headline .v span{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
-  .headline .v.kmL{color:var(--accent)}
-  .headline .v.litres{color:var(--accent-2)}
-
-  .bar{height:6px;border-radius:999px;background:#0d1117;overflow:hidden}
-  .bar > i{display:block;height:100%;border-radius:999px;transition:width .35s ease}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0}
-  .stats div{display:grid;gap:2px}
-  .stats dt{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .stats dd{margin:0;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
-
-  .trip-inputs{display:grid;grid-template-columns:minmax(150px,260px);gap:14px;margin-bottom:18px}
-  .trip-list{display:grid;gap:9px}
-  .trip-row{
-    display:flex;align-items:center;gap:12px;
-    padding:11px 14px;border-radius:10px;
-    background:#0d1117;border:1px solid var(--line);
-  }
-  .trip-row.best{border-color:rgba(63,185,80,.5);background:rgba(63,185,80,.07)}
-  .trip-row.ev{border-left:2px solid var(--ev)}
-  .rank{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--panel-2);font-size:11px;font-weight:700;color:var(--muted)}
-  .trip-row.best .rank{background:var(--accent);color:#06170a}
-  .trip-row .vname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .trip-row .vsub{font-size:12px;color:var(--muted);margin-left:6px}
-  .trip-row .vcost{font-weight:700;font-variant-numeric:tabular-nums;font-size:16px}
-
-  .muted{color:var(--muted);font-size:14px}
-  footer{color:var(--muted);font-size:12px;text-align:center;line-height:1.7}
-
-  .route-map iframe{display:block;border:1px solid var(--line);border-radius:12px;background:#0d1117}
-  .route-map-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin-bottom:12px}
-  .route-message{color:var(--danger);font-size:13px;margin-left:12px}
-  @media (max-width:700px){.route-map-controls{grid-template-columns:1fr}.route-message{margin-left:0}}
+  .price-source .label{font-size:12px;color:var(--muted)}.price-source .date{font-size:12px;color:var(--accent-2);font-weight:600}.price-source .status{font-size:12px;color:var(--muted);margin-left:auto}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px}.card{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;display:grid;gap:11px}.card.is-best{border-color:rgba(63,185,80,.55);box-shadow:0 0 0 1px rgba(63,185,80,.18) inset}.card.is-ev{border-color:rgba(163,113,247,.55)}
+  .card-head{display:flex;align-items:center;gap:7px}.card-head h3{margin:0;font-size:16px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pill{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#06170a;background:var(--accent);padding:3px 8px;border-radius:999px}.pill.ev{color:#fff;background:var(--ev)}
+  .del{background:none;border:none;color:var(--muted);font-size:15px;padding:5px 7px}.del:hover{color:var(--danger);background:rgba(248,81,73,.1)}
+  .headline{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.headline>div{display:grid;gap:2px}.headline .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}.headline .v{font-size:20px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.15}.headline .v span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}.headline .v.kmL{color:var(--accent)}.headline .v.litres{color:var(--accent-2)}
+  .bar{height:6px;border-radius:999px;background:#0d1117;overflow:hidden}.bar>i{display:block;height:100%;border-radius:999px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0}.stats div{display:grid;gap:2px}.stats dt{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.stats dd{margin:0;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+  .action-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px}.card-actions{display:flex;gap:6px;margin-left:auto}.edit{background:none;border:1px solid var(--line);color:var(--muted);padding:5px 8px;font-size:12px}.edit:hover{color:var(--text);border-color:var(--accent-2)}
+  .trip-controls{display:grid;grid-template-columns:180px 180px 220px;gap:13px;margin-bottom:16px}.trip-list{display:grid;gap:8px}.trip-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;background:#0d1117;border:1px solid var(--line)}.trip-row.best{border-color:rgba(63,185,80,.5);background:rgba(63,185,80,.07)}.trip-row.ev{border-left:2px solid var(--ev)}
+  .rank{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--panel-2);font-size:11px;font-weight:700;color:var(--muted)}.trip-row.best .rank{background:var(--accent);color:#06170a}.trip-row .vname{flex:1;min-width:0}.trip-row .vsub{display:block;font-size:12px;color:var(--muted);margin-top:2px}.trip-row .vcost{font-weight:700;font-variant-numeric:tabular-nums;font-size:16px}
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.summary-card{background:#0d1117;border:1px solid var(--line);border-radius:10px;padding:12px}.summary-card .label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.summary-card strong{display:block;font-size:18px;margin-top:3px}
+  .route-map iframe{display:block;border:1px solid var(--line);border-radius:12px;background:#0d1117}.route-map-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:13px;align-items:end}.route-message{color:var(--danger);font-size:13px}.route-distance{font-size:13px;color:var(--accent-2);font-weight:600;margin:10px 0}
+  .template-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.template{background:#0d1117;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:left;color:var(--text)}.template:hover{border-color:var(--accent-2)}.template small{display:block;color:var(--muted);margin-top:2px}
+  .backup-grid{display:flex;gap:8px;flex-wrap:wrap}.file-label{display:inline-flex;align-items:center}
+  .muted{color:var(--muted);font-size:14px}footer{color:var(--muted);font-size:12px;text-align:center;line-height:1.7}
+  @media(max-width:760px){.trip-controls{grid-template-columns:1fr 1fr}.trip-controls label:last-child{grid-column:1/-1}.summary{grid-template-columns:1fr}.route-map-controls{grid-template-columns:1fr}.headline{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:480px){body{padding:20px 10px 50px}.panel{padding:15px}.trip-controls{grid-template-columns:1fr}.trip-controls label:last-child{grid-column:auto}.cards{grid-template-columns:1fr}.headline .v{font-size:18px}}
 </style>
 </head>
 <body>
@@ -160,43 +60,45 @@
 
     <div class="price-source" id="stcPanel">
       <span class="label">STC retail price</span>
-      <select id="fuelType" style="width:auto;padding:6px 30px 6px 10px;font-size:13px">
-        <option value="mogas">Mogas (Petrol)</option>
-        <option value="gasoil">Gas Oil (Diesel)</option>
-      </select>
-      <span class="date" id="stcDate">Loading STC price…</span>
-      <button type="button" class="btn-ghost btn-sm" id="refreshStc">↻ Refresh</button>
+      <span class="date" id="stcDate">Loading…</span>
       <span class="status" id="stcStatus"></span>
+      <button type="button" class="btn-ghost btn-sm" id="refreshStc">↻ Refresh</button>
     </div>
     <div class="price-source" id="cebPanel" hidden>
-      <span class="label">CEB electricity tariff</span>
-      <select id="cebRate" style="min-width:230px;width:auto;padding:6px 30px 6px 10px;font-size:13px">
-        <option value="tou_night">Tariff 150C — Night (21:01–03:59) · Rs 4.00/kWh</option>
-        <option value="tou_day">Tariff 150C — Day (04:00–17:59) · Rs 5.40/kWh</option>
-        <option value="tou_evening">Tariff 150C — Evening (18:00–21:00) · Rs 10.00/kWh</option>
-        <option value="dom_low">Domestic — First 25 kWh · Rs 3.16/kWh</option>
-        <option value="dom_mid">Domestic — Mid tier · Rs 5.45/kWh</option>
-        <option value="dom_high">Domestic — Top tier · Rs 11.36/kWh</option>
-        <option value="custom">Custom</option>
+      <span class="label">CEB EV charging</span>
+      <select id="cebRate" style="min-width:280px;width:auto;padding:6px 30px 6px 10px;font-size:13px">
+        <option value="tou_night">Tariff 150C — Night 21:00–04:00 · Rs 4.00/kWh</option>
+        <option value="tou_day">Tariff 150C — Day 04:00–18:00 · Rs 6.55/kWh</option>
+        <option value="tou_evening">Tariff 150C — Evening 18:00–21:00 · Rs 10.00/kWh</option>
+        <option value="domestic">Domestic tariff — calculate marginal rate</option>
+        <option value="custom">Custom average rate</option>
       </select>
       <input id="customCebRate" type="number" min="0" step="0.01" placeholder="Rs/kWh" style="width:120px" hidden>
-      <span class="status" id="cebStatus">Select a CEB tariff</span>
+      <span class="status" id="cebStatus"></span>
+    </div>
+    <div id="domesticCebBox" class="price-source" hidden>
+      <label class="field" style="min-width:220px">Existing monthly household use (kWh)
+        <input id="householdKwh" type="number" min="0" step="1" value="200">
+      </label>
+      <label class="field" style="min-width:220px">EV charging per month (kWh)
+        <input id="evMonthlyKwh" type="number" min="0" step="1" value="200">
+      </label>
+      <span class="status" id="domesticCebStatus"></span>
     </div>
 
-    <form id="vehicleForm" novalidate>
+    <form id="vehicleForm"> novalidate>
       <div class="grid">
         <label class="field">Fuel type
-          <select id="vFuelType">
-            <option value="mogas">Mogas / Petrol</option>
-            <option value="gasoil">Gas Oil / Diesel</option>
-            <option value="electric">Electric</option>
-          </select>
+          <select id="vFuelType"><option value="mogas">Mogas / Petrol</option><option value="gasoil">Gas Oil / Diesel</option><option value="electric">Electric</option></select>
         </label>
         <label class="field">Vehicle name
           <input id="vName" type="text" placeholder="e.g. Toyota Vitz" autocomplete="off">
         </label>
         <label class="field">Energy price (Rs / unit)
           <input id="vPrice" type="number" min="0" step="0.01" placeholder="77.70" inputmode="decimal">
+        </label>
+        <label class="field">Price source
+          <select id="vPriceMode"><option value="current">Current STC/CEB rate</option><option value="fixed">Custom fixed price</option></select>
         </label>
         <label class="field">Energy economy
           <input id="vEff" type="number" min="0" step="0.01" placeholder="18.5" inputmode="decimal">
@@ -211,11 +113,12 @@
           <input id="chargeLoss" type="number" min="0" max="50" step="0.1" value="12" inputmode="decimal">
         </label>
       </div>
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
-        <button class="btn-primary" type="submit">Add vehicle</button>
+      <div class="action-row">
+        <button class="btn-primary" id="saveVehicleBtn" type="submit">Add vehicle</button>
+        <button class="btn-ghost" id="cancelEdit" type="button" hidden>Cancel edit</button>
         <span id="formError" class="error" role="alert"></span>
       </div>
-      <p class="hint">Prices are in Mauritian Rupees (MUR). For EVs, charging loss is included in the effective energy price.</p>
+      <p class="hint">Current price mode follows the latest verified STC price or selected CEB rate. Fixed mode preserves a custom price. EV charging loss is included in effective energy cost.</p>
     </form>
   </section>
 
@@ -223,7 +126,7 @@
   <section class="panel">
     <div class="panel-head">
       <h2>Your vehicles</h2>
-      <button id="clearAll" class="btn-ghost" type="button" hidden>Clear all</button>
+      <div class="action-row"><button id="clearAll" class="btn-ghost" type="button" hidden>Clear all</button><button id="sortVehicles" class="btn-ghost" type="button" hidden>Sort by cost</button></div>
     </div>
     <div id="vehicleList" class="cards"></div>
     <p id="emptyState" class="muted">No vehicles yet — add one above to see its cost per km and fuel consumption.</p>
@@ -232,381 +135,119 @@
 
   <!-- ============ ROUTE MAP ============ -->
   <section class="panel route-map">
-    <h2>Route map</h2>
+    <h2>Route & distance</h2>
     <div class="route-map-controls">
-      <label class="field">From
-        <input id="origin" type="text" placeholder="e.g. Port Louis" autocomplete="off">
-      </label>
-      <label class="field">To
-        <input id="destination" type="text" placeholder="e.g. Grand Baie" autocomplete="off">
-      </label>
+      <label class="field">From<input id="origin" type="text" placeholder="e.g. Port Louis" autocomplete="off"></label>
+      <label class="field">To<input id="destination" type="text" placeholder="e.g. Grand Baie" autocomplete="off"></label>
       <button id="showRoute" class="btn-primary" type="button">Show route</button>
     </div>
-    <span id="routeMessage" class="route-message" role="alert"></span>
-    <p class="hint">Read the distance shown on the map and type it manually into the Trip cost panel below.</p>
+    <div class="action-row" style="margin-top:10px">
+      <button id="estimateDistance" class="btn-ghost" type="button">Estimate driving distance</button>
+      <span id="routeMessage" class="route-message" role="alert"></span>
+    </div>
+    <div id="routeDistance" class="route-distance"></div>
+    <p class="hint">The map remains a visual route reference. The automatic distance is an approximate driving distance from a public routing service; verify it for important trips.</p>
     <iframe id="routeMap" title="Google Maps route" height="380" width="100%" hidden loading="lazy"></iframe>
   </section>
 
   <!-- ============ TRIP ============ -->
   <section class="panel" id="tripPanel" hidden>
-    <h2>Trip cost</h2>
-    <div class="trip-inputs">
-      <label class="field">Distance (km)
-        <input id="tripDistance" type="number" min="0" step="1" value="100" inputmode="decimal">
-      </label>
+    <h2>Trip cost & savings</h2>
+    <div class="trip-controls">
+      <label class="field">Distance (km)<input id="tripDistance" type="number" min="0" step="0.1" value="100" inputmode="decimal"></label>
+      <label class="field">Trip type<select id="tripType"><option value="oneway">One way</option><option value="return">Return trip</option></select></label>
+      <label class="field">Monthly distance (km)<input id="monthlyDistance" type="number" min="0" step="1" value="1500" inputmode="decimal"></label>
     </div>
     <div id="tripResults" class="trip-list"></div>
+    <div id="tripSummary" class="summary"></div>
+  </section>
+  <section class="panel">
+    <h2>Popular vehicle templates</h2>
+    <div id="templateGrid" class="template-grid"></div>
+    <p class="hint">Template economy figures are starting points only. Check your vehicle's real-world consumption and edit before relying on the comparison.</p>
+  </section>
+  <section class="panel">
+    <h2>Backup & restore</h2>
+    <div class="backup-grid">
+      <button id="exportData" class="btn-ghost" type="button">Export vehicles</button>
+      <label class="btn-ghost file-label">Import vehicles<input id="importData" type="file" accept=".json,application/json" hidden></label>
+      <button id="resetSettings" class="btn-ghost btn-danger" type="button">Reset calculator</button>
+    </div>
+    <p class="hint">Export creates a local JSON backup. Nothing is uploaded to a server.</p>
   </section>
 
-  <footer>
-    Cost per km = effective energy price ÷ economy in km per unit. EV charging losses are included.<br>
-    km/L and L/100 km are reciprocal; km/kWh and kWh/100 km work the same way.<br>
-    Prices sourced from the State Trading Corporation (STC) — stcmu.com/ppm/retail-prices.
-  </footer>
+  <footer>Running cost uses effective energy price ÷ economy. EV charging losses are included.<br>CEB Tariff 150C: Night Rs 4.00/kWh, Day Rs 6.55/kWh, Evening Rs 10.00/kWh. Domestic estimates use the published 2026 marginal tariff schedule.<br>STC prices are supplied by the scheduled GitHub price update and served locally by this app.</footer>
 </div>
 
 <script>
 (() => {
-  "use strict";
-
-  const STORE_KEY = "fuel-cost-calculator.mu.v1";
-
-  /* ---------------- STC data ---------------- */
-  const DEFAULT_STC_PRICES = {
-    mogas:  { price: 77.70, date: "29 Sep 2026", label: "Mogas" },
-    gasoil: { price: 78.35, date: "29 Sep 2026", label: "Gas Oil" }
-  };
-  const STC_CACHE_KEY = "fuel-cost-calculator.mu.stc.v1";
-  const CEB_TARIFFS = { tou_night:4, tou_day:5.4, tou_evening:10, dom_low:3.16, dom_mid:5.45, dom_high:11.36, custom:0 };
-  const CO2_FACTORS = { mogas:2.31, gasoil:2.68, electric:0.65 };
-  const STC_PRICES = structuredClone(DEFAULT_STC_PRICES);
-
-  /* ---------------- state ---------------- */
-  let state = loadState();
-
-  function loadState() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(STORE_KEY));
-      if (raw && Array.isArray(raw.vehicles)) {
-        return { currency: raw.currency || "Rs", vehicles: raw.vehicles.map(v => ({
-          ...v,
-          fuelType: v.fuelType || "mogas",
-          ...(v.fuelType === "electric" ? { chargeLoss: Math.max(0, Math.min(50, Number(v.chargeLoss ?? 0))) } : {})
-        })) };
-      }
-    } catch (_) { /* ignore corrupt storage */ }
-    return { currency: "Rs", vehicles: [] };
-  }
-  function saveState() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (_) {}
-  }
-
-  /* ---------------- helpers ---------------- */
-  const $ = id => document.getElementById(id);
-  const uid = () => (crypto.randomUUID ? crypto.randomUUID()
-                    : Date.now().toString(36) + Math.random().toString(36).slice(2));
-  const esc = s => String(s).replace(/[&<>"']/g,
-    c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
-
-  function num(n, dec) {
-    if (!isFinite(n)) return "—";
-    return n.toLocaleString("en-MU", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-  }
-  const money = (n, dec = 2) => isFinite(n) ? state.currency + " " + num(n, dec) : "—";
-
-  /* ---------------- conversions ---------------- */
-  function isEV(v) { return v.fuelType === "electric"; }
-  function kmPerUnit(v) {
-    const val = Number(v.eff);
-    if (!(val > 0)) return 0;
-    switch (v.effUnit) {
-      case "kmL":
-      case "kmkWh": return val;
-      case "L100":
-      case "kWh100": return 100 / val;
-      default: return 0;
-    }
-  }
-  function unitsPer100km(v) {
-    const kpu = kmPerUnit(v);
-    return kpu > 0 ? 100 / kpu : Infinity;
-  }
-  function effectivePrice(v) {
-    const p = Number(v.price);
-    if (!(p >= 0)) return 0;
-    return isEV(v) ? p * (1 + Math.max(0, Math.min(50, Number(v.chargeLoss ?? 0))) / 100) : p;
-  }
-  function costPerKm(v) {
-    const kpu = kmPerUnit(v);
-    if (!kpu) return Infinity;
-    return effectivePrice(v) / kpu;
-  }
-
-  function barColour(ratio) {
-    const hue = 140 - 140 * Math.max(0, Math.min(1, ratio));
-    return `hsl(${hue} 72% 46%)`;
-  }
-
-  /* ---------------- STC fetch ---------------- */
-  function loadStcCache() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(STC_CACHE_KEY));
-      if (!raw || !raw.prices || !raw.fetchedAt) return false;
-      for (const type of ["mogas", "gasoil"]) {
-        const p = Number(raw.prices[type]?.price);
-        if (!(p > 30 && p < 200)) return false;
-        STC_PRICES[type] = {
-          ...DEFAULT_STC_PRICES[type],
-          price: p,
-          date: raw.prices[type].date || DEFAULT_STC_PRICES[type].date
-        };
-      }
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  function saveStcCache() {
-    try {
-      localStorage.setItem(STC_CACHE_KEY, JSON.stringify({
-        prices: STC_PRICES,
-        fetchedAt: new Date().toISOString()
-      }));
-    } catch (_) {}
-  }
-
-  function setStcStatus(text, colour = "var(--muted)") {
-    const statusEl = $("stcStatus");
-    statusEl.textContent = text;
-    statusEl.style.color = colour;
-  }
-
-  function updateStcDisplay(sourceText) {
-    const type = $("fuelType").value;
-    const d = STC_PRICES[type];
-    $("stcDate").textContent = d.date;
-    setStcStatus(sourceText);
-    applyStcPrice();
-  }
-
-  async function fetchStcPrices() {
-    setStcStatus("Fetching…");
-    try {
-      const res = await fetch("/api/fuel-prices", {
-        headers: { "Accept": "application/json" },
-        cache: "no-store"
-      });
-      if (!res.ok) throw new Error("API " + res.status);
-
-      const data = await res.json();
-      if (!data?.prices?.mogas || !data?.prices?.gasoil) {
-        throw new Error("Invalid STC response");
-      }
-
-      for (const type of ["mogas", "gasoil"]) {
-        const p = Number(data.prices[type].price);
-        if (!(p > 30 && p < 200)) throw new Error("Invalid fuel price");
-        STC_PRICES[type] = {
-          ...DEFAULT_STC_PRICES[type],
-          price: p,
-          date: data.prices[type].date || data.date || DEFAULT_STC_PRICES[type].date
-        };
-      }
-
-      saveStcCache();
-      updateStcDisplay(data.warning ? "Using verified fallback" : "Updated ✓");
-      return true;
-    } catch (_) {
-      if (loadStcCache()) {
-        updateStcDisplay("Using last fetched price");
-      } else {
-        updateStcDisplay("Using built-in price");
-      }
-      return false;
-    }
-  }
-
-  function applyStcPrice() {
-    const type = $("fuelType").value;
-    const d = STC_PRICES[type];
-    if (d) {
-      $("vPrice").value = d.price.toFixed(2);
-      $("vFuelType").value = type;
-      $("stcDate").textContent = d.date;
-    }
-  }
-
-  /* ---------------- rendering ---------------- */
-  function renderVehicles() {
-    const list=$("vehicleList"), empty=$("emptyState"), trip=$("tripPanel"), clear=$("clearAll");
-    if (!state.vehicles.length) { list.innerHTML=""; empty.hidden=false; trip.hidden=true; clear.hidden=true; return; }
-    empty.hidden=false; empty.hidden=true; trip.hidden=false; clear.hidden=false;
-    const costs=state.vehicles.map(costPerKm), finite=costs.filter(isFinite);
-    const min=finite.length?Math.min(...finite):0, max=finite.length?Math.max(...finite):0;
-    list.innerHTML=state.vehicles.map((v,i)=>{
-      const cpk=costs[i], kpu=kmPerUnit(v), u100=unitsPer100km(v), per100=cpk*100;
-      const ratio=max>0&&isFinite(cpk)?cpk/max:0, best=isFinite(cpk)&&Math.abs(cpk-min)<1e-12&&state.vehicles.length>1;
-      const rsDec=cpk<1?3:2, ev=isEV(v), unit=ev?"kWh":"L", econ=ev?"km/kWh":"km/L", cons=ev?"kWh/100 km":"L/100 km";
-      const co2=u100*(CO2_FACTORS[v.fuelType]||0);
-      return `
-        <article class="card${best?" is-best":""}${ev?" is-ev":""}">
-          <div class="card-head"><h3 title="${esc(v.name)}">${esc(v.name)}</h3>${best?'<span class="pill">Cheapest</span>':""}${ev?'<span class="pill ev">EV</span>':""}<button class="del" type="button" data-del="${esc(v.id)}" aria-label="Delete ${esc(v.name)}">✕</button></div>
-          <div class="headline">
-            <div><span class="k">Cost</span><span class="v">${money(cpk,rsDec)}<span>/km</span></span></div>
-            <div><span class="k">Economy</span><span class="v kmL">${num(kpu,1)}<span>${econ}</span></span></div>
-            <div><span class="k">Consumption</span><span class="v litres">${num(u100,1)}<span>${cons}</span></span></div>
-          </div>
-          <div class="bar"><i style="width:${Math.max(5,ratio*100)}%;background:${barColour(ratio)}"></i></div>
-          <dl class="stats">
-            <div><dt>Cost / 100 km</dt><dd>${money(per100,2)}</dd></div>
-            <div><dt>Energy price</dt><dd>${money(Number(v.price),2)}/${unit}</dd></div>
-            <div><dt>CO₂ / 100 km</dt><dd>${num(co2,2)} kg</dd></div>
-            ${ev?`<div><dt>Charging loss</dt><dd>${num(Number(v.chargeLoss??0),1)}%</dd></div>`:""}
-          </dl>
-        </article>`;
-    }).join("");
-  }
-
-  function renderTrip() {
-    const dist=Math.max(0,Number($("tripDistance").value)||0), box=$("tripResults");
-    if(!state.vehicles.length){box.innerHTML="";return;}
-    const rows=state.vehicles.map(v=>{
-      const cpk=costPerKm(v), kpu=kmPerUnit(v), u100=unitsPer100km(v);
-      return {name:v.name,cost:cpk*dist,cpk,units:dist*u100/100,kpu,ev:isEV(v)};
-    }).sort((a,b)=>a.cost-b.cost);
-    box.innerHTML=rows.map((r,i)=>`
-      <div class="trip-row${i===0&&rows.length>1?" best":""}${r.ev?" ev":""}">
-        <span class="rank">${i+1}</span>
-        <span class="vname">${esc(r.name)}<span class="vsub">${money(r.cpk,r.cpk<1?3:2)}/km · ${num(r.kpu,1)} ${r.ev?"km/kWh":"km/L"} · ${num(r.u100,1)} ${r.ev?"kWh/100km":"L/100km"} · ${isFinite(r.units)?num(r.units,1)+(r.ev?" kWh":" L"):"—"}</span></span>
-        <span class="vcost">${money(r.cost,2)}</span>
-      </div>`).join("");
-  }
-
-  function renderAll() { renderVehicles(); renderTrip(); }
-
-  /* ---------------- events ---------------- */
-  const form  = $("vehicleForm");
-  const errEl = $("formError");
-  const showError  = msg => { errEl.textContent = msg; };
-  const clearError = () => { errEl.textContent = ""; };
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    clearError();
-
-    const name  = $("vName").value.trim() || `Vehicle ${state.vehicles.length + 1}`;
-    const price = parseFloat($("vPrice").value);
-    const eff   = parseFloat($("vEff").value);
-
-    if (!Number.isFinite(price) || price < 0) return showError("Enter a valid fuel price in Rs.");
-    if (!Number.isFinite(eff)   || eff  <= 0) return showError("Enter a valid fuel economy value.");
-
-    state.vehicles.push({
-      id: uid(),
-      name,
-      price,
-      fuelType: $("vFuelType").value,
-      eff,
-      effUnit: $("vEffUnit").value,
-      ...( $("vFuelType").value === "electric" ? { chargeLoss: Math.max(0, Math.min(50, Number($("chargeLoss").value) || 0)) } : {})
-    });
-
-    saveState();
-    renderAll();
-
-    $("vName").value = "";
-    $("vEff").value  = "";
-    $("vName").focus();
-  });
-
-  $("vehicleList").addEventListener("click", e => {
-    const btn = e.target.closest("[data-del]");
-    if (!btn) return;
-    state.vehicles = state.vehicles.filter(v => v.id !== btn.dataset.del);
-    saveState();
-    renderAll();
-  });
-
-  $("clearAll").addEventListener("click", () => {
-    if (!state.vehicles.length) return;
-    if (confirm("Remove all vehicles?")) {
-      state.vehicles = [];
-      saveState();
-      renderAll();
-    }
-  });
-
-  $("currency").addEventListener("input", e => {
-    state.currency = e.target.value.slice(0, 4) || "Rs";
-    saveState();
-    renderAll();
-  });
-
-  function syncFormForFuelType() {
-    const type=$("vFuelType").value, ev=type==="electric";
-    $("stcPanel").hidden=ev; $("cebPanel").hidden=!ev; $("chargeLossField").hidden=!ev;
-    $("vPrice").placeholder=ev?"4.00":"77.70";
-    $("vEffUnit").innerHTML=ev
-      ? '<option value="kmkWh">km / kWh</option><option value="kWh100">kWh / 100 km</option>'
-      : '<option value="kmL">km / L</option><option value="L100">L / 100 km</option>';
-    if(ev) applyCebRate(); else { $("fuelType").value=type; applyStcPrice(); }
-  }
-  function applyCebRate() {
-    const key=$("cebRate").value, custom=key==="custom";
-    $("customCebRate").hidden=!custom;
-    if(custom) {
-      const v=Number($("customCebRate").value);
-      if(v>=0) $("vPrice").value=v.toFixed(2);
-      $("cebStatus").textContent="Enter your own Rs/kWh rate";
-    } else {
-      const rate=CEB_TARIFFS[key];
-      $("vPrice").value=rate.toFixed(2);
-      $("cebStatus").textContent="Selected rate: Rs "+rate.toFixed(2)+"/kWh";
-    }
-  }
-  $("vFuelType").addEventListener("change",syncFormForFuelType);
-  $("cebRate").addEventListener("change",applyCebRate);
-  $("customCebRate").addEventListener("input",applyCebRate);
-
-  $("fuelType").addEventListener("change", () => {
-    applyStcPrice();
-    if(STC_PRICES[$("fuelType").value]) $("stcDate").textContent=STC_PRICES[$("fuelType").value].date;
-  });
-
-  const refreshBtn = $("refreshStc");
-  refreshBtn.addEventListener("click", async () => {
-    refreshBtn.disabled = true;
-    refreshBtn.style.opacity = ".5";
-    await fetchStcPrices();
-    refreshBtn.disabled = false;
-    refreshBtn.style.opacity = "";
-  });
-
-  $("tripDistance").addEventListener("input", renderTrip);
-  syncFormForFuelType();
-
-
-  /* ---------------- route map ---------------- */
-  $("showRoute").addEventListener("click", () => {
-    const origin = $("origin").value.trim();
-    const destination = $("destination").value.trim();
-    const message = $("routeMessage");
-    if (!origin || !destination) {
-      message.textContent = "Enter both a starting point and destination.";
-      return;
-    }
-    message.textContent = "";
-    $("routeMap").src = "https://maps.google.com/maps?saddr=" + encodeURIComponent(origin) + "&daddr=" + encodeURIComponent(destination) + "&output=embed";
-    $("routeMap").hidden = false;
-  });
-
-  /* ---------------- init ---------------- */
-  $("currency").value = state.currency;
-  loadStcCache();
-  applyStcPrice();
-  renderAll();
-  fetchStcPrices();
+"use strict";
+const STORE_KEY="fuel-cost-calculator.mu.v1";
+const STC_CACHE_KEY="fuel-cost-calculator.mu.stc.v1";
+const DEFAULT_STC_PRICES={mogas:{price:77.70,date:"29 Sep 2026"},gasoil:{price:78.35,date:"29 Sep 2026"}};
+const CEB_TARIFFS={tou_night:4,tou_day:6.55,tou_evening:10,custom:0};
+const DOMESTIC_TIERS=[[25,3.63],[25,5.04],[25,5.45],[25,6.27],[100,7.07],[50,8.07],[50,9.09],[200,12.03],[500,12.28],[500,12.55],[500,12.80],[Infinity,13.06]];
+const CO2_FACTORS={mogas:2.31,gasoil:2.68,electric:0.65};
+const TEMPLATES=[
+{name:"Toyota Vitz",fuelType:"mogas",eff:18.5,effUnit:"kmL"},
+{name:"Toyota Aqua",fuelType:"mogas",eff:24,effUnit:"kmL"},
+{name:"Honda Fit",fuelType:"mogas",eff:18,effUnit:"kmL"},
+{name:"Nissan Note e-Power",fuelType:"mogas",eff:23,effUnit:"kmL"},
+{name:"BYD Dolphin Surf",fuelType:"electric",eff:6.5,effUnit:"kmkWh"},
+{name:"BYD Atto 2",fuelType:"electric",eff:6.2,effUnit:"kmkWh"}
+];
+const STC_PRICES=structuredClone(DEFAULT_STC_PRICES);
+let editingId=null, state=loadState();
+const $=id=>document.getElementById(id);
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+function num(n,d){return Number.isFinite(n)?n.toLocaleString("en-MU",{minimumFractionDigits:d,maximumFractionDigits:d}):"—"}
+const money=(n,d=2)=>Number.isFinite(n)?state.currency+" "+num(n,d):"—";
+function loadState(){try{const raw=JSON.parse(localStorage.getItem(STORE_KEY));if(raw&&Array.isArray(raw.vehicles))return{currency:raw.currency||"Rs",vehicles:raw.vehicles.map(v=>({...v,fuelType:v.fuelType||"mogas",priceMode:v.priceMode||"fixed",customPrice:Number(v.customPrice??v.price),...(v.fuelType==="electric"?{chargeLoss:Math.max(0,Math.min(50,Number(v.chargeLoss??0)))}:{})}))}}catch(_){ }return{currency:"Rs",vehicles:[]}}
+function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(_){}}
+function isEV(v){return v.fuelType==="electric"}
+function currentPrice(v){if(v.priceMode==="fixed")return Number(v.customPrice??v.price);if(isEV(v))return cebSelectedRate();return Number(STC_PRICES[v.fuelType]?.price??v.price)}
+function kmPerUnit(v){const val=Number(v.eff);if(!(val>0))return 0;switch(v.effUnit){case"kmL":case"kmkWh":return val;case"L100":case"kWh100":return 100/val;default:return 0}}
+function unitsPer100km(v){const k=kmPerUnit(v);return k>0?100/k:Infinity}
+function effectivePrice(v){const p=currentPrice(v);if(!(p>=0))return 0;return isEV(v)?p*(1+Math.max(0,Math.min(50,Number(v.chargeLoss??0)))/100):p}
+function costPerKm(v){const k=kmPerUnit(v);return k>0?effectivePrice(v)/k:Infinity}
+function barColour(r){return `hsl(${140-140*Math.max(0,Math.min(1,r))} 72% 46%)`}
+function loadStcCache(){try{const raw=JSON.parse(localStorage.getItem(STC_CACHE_KEY));if(!raw?.prices)return false;for(const t of["mogas","gasoil"]){const p=Number(raw.prices[t]?.price);if(!(p>30&&p<200))return false;STC_PRICES[t]={...DEFAULT_STC_PRICES[t],price:p,date:raw.prices[t].date||DEFAULT_STC_PRICES[t].date}}return true}catch(_){return false}}
+function saveStcCache(){try{localStorage.setItem(STC_CACHE_KEY,JSON.stringify({prices:STC_PRICES,fetchedAt:new Date().toISOString()}))}catch(_){}}
+function setStcStatus(t,c="var(--muted)"){$("stcStatus").textContent=t;$("stcStatus").style.color=c}
+async function fetchStcPrices(){setStcStatus("Updating…");try{const r=await fetch("/api/fuel-prices",{headers:{Accept:"application/json"},cache:"no-store"});if(!r.ok)throw Error("API "+r.status);const d=await r.json();for(const t of["mogas","gasoil"]){const p=Number(d.prices?.[t]?.price);if(!(p>30&&p<200))throw Error("Invalid price");STC_PRICES[t]={...DEFAULT_STC_PRICES[t],price:p,date:d.prices[t].date||d.date||DEFAULT_STC_PRICES[t].date}}saveStcCache();$("stcDate").textContent="Effective "+STC_PRICES.mogas.date;setStcStatus("Updated ✓","var(--accent)");refreshPriceDisplays()}catch(_){loadStcCache();$("stcDate").textContent="Effective "+STC_PRICES.mogas.date;setStcStatus("Using verified local data","var(--accent-2)");refreshPriceDisplays()}}
+function cebSelectedRate(){const k=$("cebRate").value;if(k==="custom")return Math.max(0,Number($("customCebRate").value)||0);if(k==="domestic")return domesticMarginalRate();return CEB_TARIFFS[k]??0}
+function domesticMarginalRate(){let base=Math.max(0,Number($("householdKwh").value)||0),ev=Math.max(0,Number($("evMonthlyKwh").value)||0),rateFor=base+1;let acc=0;for(const[tier,rate]of DOMESTIC_TIERS){const next=tier===Infinity?Infinity:acc+tier;if(rateFor<=next)return rate;acc=next}return DOMESTIC_TIERS.at(-1)[1]}
+function domesticAddedCost(){let base=Math.max(0,Number($("householdKwh").value)||0),ev=Math.max(0,Number($("evMonthlyKwh").value)||0);return marginalCost(base+ev)-marginalCost(base)}
+function marginalCost(kwh){let rem=Math.max(0,kwh),cost=0;for(const[tier,rate]of DOMESTIC_TIERS){const take=Math.min(rem,tier);cost+=take*rate;rem-=take;if(rem<=0)break}return cost}
+function syncForm(){const type=$("vFuelType").value,ev=type==="electric";$("stcPanel").hidden=ev;$("cebPanel").hidden=!ev;$("chargeLossField").hidden=!ev;$("vEffUnit").innerHTML=ev?'<option value="kmkWh">km / kWh</option><option value="kWh100">kWh / 100 km</option>':'<option value="kmL">km / L</option><option value="L100">L / 100 km</option>';if($("vPriceMode").value==="current")applyCurrentPrice();else $("vPrice").disabled=false;if(ev)applyCebRate();else $("vPrice").disabled=$("vPriceMode").value==="current"}
+function applyCurrentPrice(){const ev=$("vFuelType").value==="electric";$("vPrice").disabled=true;$("vPrice").value=(ev?cebSelectedRate():STC_PRICES[$("vFuelType").value].price).toFixed(2)}
+function applyCebRate(){if($("vFuelType").value!=="electric")return;const k=$("cebRate").value,custom=k==="custom",dom=k==="domestic";$("customCebRate").hidden=!custom;$("domesticCebBox").hidden=!dom;if(custom)$("cebStatus").textContent="Enter your average Rs/kWh rate";else if(dom){$("cebStatus").textContent="Marginal rate: Rs "+domesticMarginalRate().toFixed(2)+"/kWh";$("domesticCebStatus").textContent="EV charging added cost: "+money(domesticAddedCost(),2)+"/month";}else $("cebStatus").textContent="Selected rate: Rs "+cebSelectedRate().toFixed(2)+"/kWh";if($("vPriceMode").value==="current")applyCurrentPrice()}
+function refreshPriceDisplays(){if(!$("vPriceMode").value||$("vPriceMode").value==="current")applyCurrentPrice();renderAll()}
+function renderVehicles(){const list=$("vehicleList"),empty=$("emptyState"),trip=$("tripPanel"),clear=$("clearAll"),sort=$("sortVehicles");if(!state.vehicles.length){list.innerHTML="";empty.hidden=false;trip.hidden=true;clear.hidden=true;sort.hidden=true;return}empty.hidden=true;trip.hidden=false;clear.hidden=false;sort.hidden=false;const arr=[...state.vehicles];const costs=arr.map(costPerKm),finite=costs.filter(Number.isFinite),min=finite.length?Math.min(...finite):0,max=finite.length?Math.max(...finite):0;list.innerHTML=arr.map((v,i)=>{const c=costs[i],k=kmPerUnit(v),u=unitsPer100km(v),ev=isEV(v),unit=ev?"kWh":"L",econ=ev?"km/kWh":"km/L",cons=ev?"kWh/100 km":"L/100 km",co2=u*(CO2_FACTORS[v.fuelType]||0),best=Number.isFinite(c)&&Math.abs(c-min)<1e-12&&arr.length>1,rs=c<1?3:2;return `<article class="card${best?" is-best":""}${ev?" is-ev":""}"><div class="card-head"><h3 title="${esc(v.name)}">${esc(v.name)}</h3>${best?'<span class="pill">Cheapest</span>':""}${ev?'<span class="pill ev">EV</span>':""}<div class="card-actions"><button class="edit" data-edit="${esc(v.id)}" type="button">Edit</button><button class="del" data-del="${esc(v.id)}" type="button" aria-label="Delete ${esc(v.name)}">✕</button></div></div><div class="headline"><div><span class="k">Cost</span><span class="v">${money(c,rs)}<span>/km</span></span></div><div><span class="k">Economy</span><span class="v kmL">${num(k,1)}<span>${econ}</span></span></div><div><span class="k">Consumption</span><span class="v litres">${num(u,1)}<span>${cons}</span></span></div></div><div class="bar"><i style="width:${Math.max(5,max>0&&Number.isFinite(c)?c/max*100:5)}%;background:${barColour(max>0&&Number.isFinite(c)?c/max:0)}"></i></div><dl class="stats"><div><dt>Cost / 100 km</dt><dd>${money(c*100,2)}</dd></div><div><dt>Energy price</dt><dd>${money(currentPrice(v),2)}/${unit}${v.priceMode==="fixed"?" · fixed":" · current"}</dd></div><div><dt>CO₂ / 100 km</dt><dd>${num(co2,2)} kg</dd></div>${ev?'<div><dt>Charging loss</dt><dd>'+num(Number(v.chargeLoss??0),1)+'%</dd></div>':""}</dl></article>`}).join("")}
+function renderTrip(){const dist0=Math.max(0,Number($("tripDistance").value)||0),dist=$("tripType").value==="return"?dist0*2:dist0,monthly=Math.max(0,Number($("monthlyDistance").value)||0),box=$("tripResults"),summary=$("tripSummary");if(!state.vehicles.length){box.innerHTML="";summary.innerHTML="";return}const rows=state.vehicles.map(v=>({v,cost:costPerKm(v)*dist,cpk:costPerKm(v),units:dist*unitsPer100km(v)/100})).sort((a,b)=>a.cost-b.cost);box.innerHTML=rows.map((r,i)=>`<div class="trip-row${i===0&&rows.length>1?" best":""}${isEV(r.v)?" ev":""}"><span class="rank">${i+1}</span><span class="vname">${esc(r.v.name)}<span class="vsub">${money(r.cpk,r.cpk<1?3:2)}/km · ${num(r.units,1)} ${isEV(r.v)?"kWh":"L"} used · ${num(unitsPer100km(r.v),1)} ${isEV(r.v)?"kWh/100km":"L/100km"}</span></span><span class="vcost">${money(r.cost,2)}</span></div>`).join("");if(rows.length>1){const best=rows[0],worst=rows.at(-1),save=(worst.cost-best.cost),annual=best.cpk*monthly*12;summary.innerHTML=`<div class="summary-card"><span class="label">Cheapest trip</span><strong>${esc(best.v.name)}</strong><span class="hint">${money(best.cost,2)}</span></div><div class="summary-card"><span class="label">Savings vs most expensive</span><strong>${money(save,2)}</strong><span class="hint">for this trip</span></div><div class="summary-card"><span class="label">Cheapest annual running cost</span><strong>${money(annual,0)}</strong><span class="hint">at ${num(monthly,0)} km/month</span></div>`}else summary.innerHTML=""}
+function renderAll(){renderVehicles();renderTrip();renderTemplates()}
+function resetForm(){editingId=null;$("vehicleForm").reset();$("vPriceMode").value="current";$("chargeLoss").value=12;$("saveVehicleBtn").textContent="Add vehicle";$("cancelEdit").hidden=true;$("vPrice").disabled=true;syncForm()}
+function fillForm(v){editingId=v.id;$("vFuelType").value=v.fuelType;$("vName").value=v.name;$("vPriceMode").value=v.priceMode||"fixed";$("vPrice").value=Number(v.customPrice??v.price).toFixed(2);$("vEff").value=v.eff;$("vEffUnit").value=v.effUnit;$("chargeLoss").value=Number(v.chargeLoss??0);$("saveVehicleBtn").textContent="Save changes";$("cancelEdit").hidden=false;syncForm();if(v.priceMode==="fixed")$("vPrice").disabled=false;window.scrollTo({top:0,behavior:"smooth"})}
+function renderTemplates(){$("templateGrid").innerHTML=TEMPLATES.map((t,i)=>`<button class="template" data-template="${i}" type="button"><strong>${esc(t.name)}</strong><small>${t.fuelType==="electric"?"EV · "+t.eff+" km/kWh":t.eff+" km/L"}</small></button>`).join("")}
+$("vehicleForm").addEventListener("submit",e=>{e.preventDefault();$("formError").textContent="";const type=$("vFuelType").value,ev=type==="electric",name=$("vName").value.trim()||"Vehicle "+(state.vehicles.length+1),eff=Number($("vEff").value),mode=$("vPriceMode").value,price=Number($("vPrice").value);if(!(eff>0))return $("formError").textContent="Enter a valid economy.";if(mode==="fixed"&&!(price>=0))return $("formError").textContent="Enter a valid fixed energy price.";const v={id:editingId||uid(),name,fuelType:type,eff,effUnit:$("vEffUnit").value,priceMode:mode,customPrice:mode==="fixed"?price:(ev?cebSelectedRate():STC_PRICES[type].price),price:mode==="fixed"?price:(ev?cebSelectedRate():STC_PRICES[type].price)};if(ev)v.chargeLoss=Math.max(0,Math.min(50,Number($("chargeLoss").value)||0));if(editingId)state.vehicles=state.vehicles.map(x=>x.id===editingId?v:x);else state.vehicles.push(v);saveState();renderAll();resetForm();$("vName").focus()});
+$("cancelEdit").addEventListener("click",resetForm);
+$("vehicleList").addEventListener("click",e=>{const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-del]");if(edit){const v=state.vehicles.find(x=>x.id===edit.dataset.edit);if(v)fillForm(v)}if(del){state.vehicles=state.vehicles.filter(v=>v.id!==del.dataset.del);saveState();renderAll()}});
+$("clearAll").addEventListener("click",()=>{if(state.vehicles.length&&confirm("Remove all vehicles?")){state.vehicles=[];saveState();renderAll()}});
+$("sortVehicles").addEventListener("click",()=>{state.vehicles.sort((a,b)=>costPerKm(a)-costPerKm(b));saveState();renderAll()});
+$("currency").addEventListener("input",e=>{state.currency=e.target.value.slice(0,4)||"Rs";saveState();renderAll()});
+$("vFuelType").addEventListener("change",()=>{syncForm();if($("vPriceMode").value==="current")applyCurrentPrice()});
+$("vPriceMode").addEventListener("change",syncForm);
+$("cebRate").addEventListener("change",applyCebRate);$("customCebRate").addEventListener("input",applyCebRate);$("householdKwh").addEventListener("input",applyCebRate);$("evMonthlyKwh").addEventListener("input",applyCebRate);
+$("refreshStc").addEventListener("click",async()=>{const b=$("refreshStc");b.disabled=true;await fetchStcPrices();b.disabled=false});
+$("tripDistance").addEventListener("input",renderTrip);$("tripType").addEventListener("change",renderTrip);$("monthlyDistance").addEventListener("input",renderTrip);
+$("templateGrid").addEventListener("click",e=>{const b=e.target.closest("[data-template]");if(!b)return;const t=TEMPLATES[Number(b.dataset.template)];$("vFuelType").value=t.fuelType;$("vName").value=t.name;$("vEff").value=t.eff;$("vEffUnit").value=t.effUnit;$("vPriceMode").value="current";syncForm();window.scrollTo({top:0,behavior:"smooth"})});
+$("showRoute").addEventListener("click",()=>{const o=$("origin").value.trim(),d=$("destination").value.trim();if(!o||!d){$("routeMessage").textContent="Enter both a starting point and destination.";return}$("routeMessage").textContent="";$("routeMap").src="https://maps.google.com/maps?saddr="+encodeURIComponent(o)+"&daddr="+encodeURIComponent(d)+"&output=embed";$("routeMap").hidden=false});
+$("estimateDistance").addEventListener("click",async()=>{const o=$("origin").value.trim(),d=$("destination").value.trim();if(!o||!d){$("routeMessage").textContent="Enter both locations first.";return}const out=$("routeDistance");out.textContent="Estimating…";$("routeMessage").textContent="";try{const headers={Accept:"application/json"};const [a,b]=await Promise.all([fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(o)+"&limit=1",{headers}),fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(d)+"&limit=1",{headers})]);const ga=(await a.json()).features?.[0]?.geometry?.coordinates,gb=(await b.json()).features?.[0]?.geometry?.coordinates;if(!ga||!gb)throw Error("Location not found");const r=await fetch("https://router.project-osrm.org/route/v1/driving/"+ga[0]+","+ga[1]+";"+gb[0]+","+gb[1]+"?overview=false");const j=await r.json();if(j.code!=="Ok")throw Error("Route unavailable");const km=j.routes[0].distance/1000;out.textContent="Estimated driving distance: "+num(km,1)+" km";$("tripDistance").value=km.toFixed(1);renderTrip()}catch(_){out.textContent="Automatic estimate unavailable — use the map distance manually."}});
+$("exportData").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),state},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="fuel-calculator-backup.json";a.click();URL.revokeObjectURL(a.href)});
+$("importData").addEventListener("change",async e=>{const file=e.target.files?.[0];if(!file)return;try{const d=JSON.parse(await file.text()),s=d.state||d;if(!Array.isArray(s.vehicles))throw Error("Invalid backup");state={currency:s.currency||"Rs",vehicles:s.vehicles.map(v=>({...v,id:v.id||uid(),fuelType:v.fuelType||"mogas",priceMode:v.priceMode||"fixed",customPrice:Number(v.customPrice??v.price),...(v.fuelType==="electric"?{chargeLoss:Number(v.chargeLoss??0)}:{})}))};saveState();renderAll();resetForm();alert("Vehicles imported successfully.")}catch(_){alert("Could not import this file.")}e.target.value=""});
+$("resetSettings").addEventListener("click",()=>{if(confirm("Reset all saved vehicles and calculator settings?")){localStorage.removeItem(STORE_KEY);localStorage.removeItem(STC_CACHE_KEY);state={currency:"Rs",vehicles:[]};renderAll();resetForm()}});
+$("currency").value=state.currency;loadStcCache();$("stcDate").textContent="Effective "+STC_PRICES.mogas.date;syncForm();renderAll();fetchStcPrices();
 })();
 </script>
 </body>
